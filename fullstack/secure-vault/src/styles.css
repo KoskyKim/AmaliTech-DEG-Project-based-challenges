@@ -2,7 +2,7 @@
 :root {
   --bg-canvas:#0A0E14; --bg-surface:#0F141C; --bg-elevated:#161D28; --bg-hover:#1B2433; --bg-selected:#0E2F33;
   --border-subtle:#1F2937; --border:#2A3547;
-  --text:#E6EDF3; --text-2:#9AA7B8; --text-muted:#68768A; --on-accent:#04201A;
+  --text:#E6EDF3; --text-2:#9AA7B8; --text-muted:#8893A3; --on-accent:#04201A;
   --accent:#22E3B0; --accent-dim:#14B88F; --success:#3DDC84; --focus:#FF9F1A;
   --glow:0 0 0 1.5px var(--focus), 0 0 10px rgba(255,159,26,.45);
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s8:32px; --s10:40px;

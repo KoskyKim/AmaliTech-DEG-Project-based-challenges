@@ -28,7 +28,7 @@ Requires Node 18+.
 
 ## Design system
 
-The tokens on the Figma "Design System" page are mirrored one-to-one as CSS custom properties at the top of `src/styles.css`: colors, 4px spacing scale, radii and type styles (Inter for UI text, JetBrains Mono for metadata). Keyboard focus is shown with an orange ring and soft glow; selection uses a mint tint with a left bar. The two are intentionally different so a user can see both at once.
+The tokens on the Figma "Design System" page are mirrored one-to-one as CSS custom properties at the top of `src/styles.css`: colors, 4px spacing scale, radii and type styles (Inter for UI text, JetBrains Mono for metadata). Keyboard focus is shown with an orange ring and soft glow; selection uses a mint tint with a left bar. The two are intentionally different so a user can see both at once. All text tokens meet WCAG AA (4.5:1) on every surface they appear on; the weakest pairing is `text-muted` on the selected-row tint at 4.58:1.
 
 ## Recursive strategy
 

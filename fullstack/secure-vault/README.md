@@ -16,6 +16,13 @@ npm run preview  # serve the production build locally
 
 Requires Node 18+.
 
+
+## Deployment
+
+Every push to `main` builds the app and publishes it to GitHub Pages (`.github/workflows/deploy.yml`). The workflow uses `npm ci`, so `package-lock.json` must be committed. `vite.config.js` uses a relative `base`, so the app works from a project URL like `https://<user>.github.io/<repo>/` without changes.
+
+
+
 ## Features
 
 | Area | What it does |

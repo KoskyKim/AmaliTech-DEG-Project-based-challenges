@@ -44,7 +44,7 @@ The tree stays as plain, unmodified data. All UI state lives in one small store 
 **The gap.** The brief covers browsing but not returning. In a vault with deeply nested case folders, people reopen the same few documents every day and have to dig through the same 4–5 levels each time.
 
 **What it does.**
-- **Pinned.** `P` or the "Pin file" button pins the file. Pinned files appear at the top of the explorer.
+- **Pinned.** `P` or the "Pin file" button pins the file. Pinned files appear at the top of the explorer. The list is capped at **6 files** so it stays a shortcut list rather than a second tree: at the limit the Pin button is disabled with an explanation, the list header shows `6/6`, and unpinning is always allowed. The cap is enforced in the store (not only the UI), and older saved lists are trimmed on load.
 - **Recent.** The last five files you selected are listed under Recent.
 - Clicking either list opens every parent folder, then selects and focuses the file.
 - Both lists persist in `localStorage`. Stored ids are validated against the index on load, so a file that no longer exists is silently dropped.

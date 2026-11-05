@@ -16,13 +16,14 @@ const read = (k) => {
   try { return (JSON.parse(localStorage.getItem(k)) || []).filter((id) => index.has(id)) } catch { return [] }
 }
 const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
+const MAX_PINNED = 6
 
 const state = reactive({
   expanded: new Set(),
   selectedId: null,
   focusedId: data[0].id,
   query: '',
-  pinned: read('sv:pinned'),
+  pinned: read('sv:pinned').slice(0, MAX_PINNED), // also trims lists saved before the cap existed
   recent: read('sv:recent'),
 })
 watch(() => state.pinned, (v) => write('sv:pinned', v), { deep: true })
@@ -80,7 +81,9 @@ function reveal(id) { // open every ancestor, then select + focus (used by Pinne
   focus(id)
 }
 const isPinned = (id) => state.pinned.includes(id)
+const canPin = (id) => isPinned(id) || state.pinned.length < MAX_PINNED
 function togglePin(id) {
+  if (!canPin(id)) return // limit reached: unpinning is always allowed
   state.pinned = isPinned(id) ? state.pinned.filter((x) => x !== id) : [id, ...state.pinned]
 }
 
@@ -124,7 +127,7 @@ function parts(name) {
 
 export const useVault = () => ({
   data, state, rows, filter, nodeOf, isVisible, isOpen, activate, reveal, focus, select,
-  onKey, isPinned, togglePin, fileType, meta, parts,
+  onKey, isPinned, canPin, togglePin, MAX_PINNED, fileType, meta, parts,
   pathOf: (id) => index.get(id)?.path ?? [],
   matchCount: computed(() => (filter.value ? [...filter.value.show].filter((id) => index.get(id).node.type === 'file' || index.get(id).node.name.toLowerCase().includes(q.value)).length : 0)),
 })

@@ -43,7 +43,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onGlobal))
         </label>
 
         <template v-if="!v.state.query">
-          <QuickList title="PINNED" icon="pin" :ids="v.state.pinned" />
+          <QuickList title="PINNED" icon="pin" :ids="v.state.pinned" :max="v.MAX_PINNED" />
           <QuickList title="RECENT" icon="clock" :ids="v.state.recent" />
         </template>
 

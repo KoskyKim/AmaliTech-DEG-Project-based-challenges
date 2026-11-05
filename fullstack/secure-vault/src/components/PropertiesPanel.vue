@@ -25,10 +25,11 @@ const file = computed(() => v.nodeOf(v.state.selectedId))
       </dl>
       <div class="actions">
         <button class="btn primary">Open file</button>
-        <button class="btn" @click="v.togglePin(file.id)">
+        <button class="btn" :disabled="!v.canPin(file.id)" @click="v.togglePin(file.id)">
           <Icon name="pin" :size="14" /> {{ v.isPinned(file.id) ? 'Unpin' : 'Pin file' }}
         </button>
       </div>
+      <p v-if="!v.canPin(file.id)" class="limit" role="status">Pin limit reached ({{ v.MAX_PINNED }}). Unpin a file to pin another.</p>
     </template>
   </section>
 </template>

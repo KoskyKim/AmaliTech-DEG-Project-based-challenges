@@ -1,123 +1,68 @@
-# SecureVault-Dashboard
+# SecureVault Dashboard
 
-This challenge is designed to test your ability to bridge Computer Science fundamentals with Modern Frontend Engineering.
+A dark-mode, keyboard-first file explorer for SecureVault's encrypted document vault. Built with **Vue 3 + Vite**, with every component written from scratch (no UI libraries).
 
-## 1. Business Scenario & Context
+- **Live demo:** _add your deployed URL here_
+- **Design file (Figma):** https://www.figma.com/design/R2tJUevQEKMYAmvw3RXw1m
 
-**Client:** SecureVault Inc.
-**Industry:** Enterprise Cloud Security
+## Setup
 
-**The Problem:** SecureVault offers high-security cloud storage for law firms and banks. Their backend engineers have built a robust API that returns folder structures efficiently. However, their current frontend is a simple list that is hard to navigate. Clients are complaining that they can't manage nested files easily.
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # production build in dist/
+npm run preview  # serve the production build locally
+```
 
-**Your Role:** You are the incoming Junior Frontend Engineer. Your task is to design and build a modern, high-performance "File Explorer" UI that impresses the CTO and the Design Lead.
+Requires Node 18+.
 
----
+## Features
 
-## 2. The Assignment Stages
+| Area | What it does |
+| --- | --- |
+| Recursive tree | Renders `src/data.json` at any depth; click a folder to expand or collapse it. |
+| Properties panel | Selecting a file shows its Name, Type and Size. Type is derived from the file extension. |
+| Keyboard navigation | `↑` `↓` move focus, `→` expands (or enters) a folder, `←` collapses (or goes to the parent), `Enter` selects a file, `Home` / `End` jump to the ends. |
+| Search | `/` focuses the search box. Matching items force their ancestor folders open; `Esc` clears the search. |
+| **Pinned & Recent (wildcard)** | See below. |
 
-This is a **hybrid design/engineering challenge**. You are expected to demonstrate competence in both visual design logic and algorithmic frontend implementation.
+## Design system
 
-### Phase 1: The Design System
+The tokens on the Figma "Design System" page are mirrored one-to-one as CSS custom properties at the top of `src/styles.css`: colors, 4px spacing scale, radii and type styles (Inter for UI text, JetBrains Mono for metadata). Keyboard focus is shown with an orange ring and soft glow; selection uses a mint tint with a left bar. The two are intentionally different so a user can see both at once.
 
-**Before writing code, you must design the interface.**
+## Recursive strategy
 
-- **Deliverable:** A link to a design file (Figma, Penpot, or Sketch) or a PDF export of your design frames.
-- **Requirement:** Your design file must include a dedicated **"Design System" page** that defines:
-  - **Typography Scale**
-  - **Color Palette**
-  - **Spacing Grid**
-  - **Component States**
-- **Brand Guidelines:** SecureVault wants a "Dark Mode" aesthetic that feels "cyber-secure, precise, and fast."
+The tree stays as plain, unmodified data. All UI state lives in one small store (`src/useVault.js`), so the data is never mutated.
 
-### Phase 2: The Implementation
+1. **Flat index.** On load the tree is walked once into a `Map` of `id → { node, parent, path }`. Looking up a node, its parent or its full path is O(1), which is what keyboard navigation, Pinned and Recent need.
+2. **Recursive rendering.** `TreeNode.vue` renders one row and, if the folder is open, renders itself again for each child. Depth only changes the indent (`8px + 16px × depth`), so 2 levels or 20 levels use the same code.
+3. **Expansion state.** Open folders are a `Set` of ids, kept separate from the data. Search overrides it: a computed `filter` gives the ids that should stay visible and the folders that must be open.
+4. **Keyboard model.** A computed `rows` list holds the currently visible nodes in display order. `↑` and `↓` move through it, and `←` uses the index to find the parent. This keeps the keyboard logic independent of the recursive DOM. The tree uses ARIA `tree`, `treeitem` and `group` roles with a roving `tabindex`, so only one row is in the tab order at a time.
 
-**Build the application using the design system you created in Phase 1.**
+## Wildcard feature: Pinned & Recent files
 
-- **Constraint:** You **cannot** use component libraries like Bootstrap, Material UI, Chakra UI, or Ant Design. You must build your components from scratch to prove you understand CSS layout and component abstraction.
-- **Note:** CSS frameworks like Tailwind are allowed _only_ if you use them to build your own reusable component architecture.
+**The gap.** The brief covers browsing but not returning. In a vault with deeply nested case folders, people reopen the same few documents every day and have to dig through the same 4–5 levels each time.
 
----
+**What it does.**
+- **Pinned.** `P` or the "Pin file" button pins the file. Pinned files appear at the top of the explorer.
+- **Recent.** The last five files you selected are listed under Recent.
+- Clicking either list opens every parent folder, then selects and focuses the file.
+- Both lists persist in `localStorage`. Stored ids are validated against the index on load, so a file that no longer exists is silently dropped.
+- Both lists hide while searching so results stay uncluttered.
 
-## 3. User Stories & Acceptance Criteria
+**Business value.** It cuts the daily time spent navigating, which is the complaint behind this redesign ("can't manage nested files easily"). It costs the backend nothing because it is client-side only, and it works with the existing API shape.
 
-### Core Features (Required)
+## Project structure
 
-#### Story 1: The Recursive Tree
-
-> "As a lawyer with 10 years of case files, I need to navigate deeply nested folders without reloading the page."
-
-- **AC 1:** The UI renders the folder structure from the provided JSON.
-- **AC 2:** The component structure must be **recursive**. It should handle 2 levels of depth or 20 levels without breaking the UI.
-- **AC 3:** Folders must expand/collapse on click.
-
-#### Story 2: File Details & Inspection
-
-> "As a user, I need to see file metadata to ensure I'm opening the right version."
-
-- **AC 1:** Clicking a file "selects" it (distinct visual state based on your design).
-- **AC 2:** A "Properties Panel" displays the selected file's Name, Type, and Size.
-
-#### Story 3: Keyboard Accessibility
-
-> "As a power user, I hate reaching for my mouse. I want to navigate the vault using only my keyboard."
-
-- **AC 1:** `Up/Down` arrows move focus between the visible items in the explorer.
-- **AC 2:** `Right` arrow expands a folder; `Left` arrow collapses it.
-- **AC 3:** `Enter` selects the file.
-
-### The "Wildcard" Feature (Required)
-
-#### Story 4: The Innovation Clause
-
-> "As a developer, I want to add one feature that the client didn't ask for, but would significantly improve the user experience."
-
-- **Task:** Identify a gap in the requirements. What is missing?
-- **AC 1:** Implement **one** additional feature of your choice.
-- **AC 2:** In your README, explain _why_ you chose this feature and how it adds value to the business.
-
-### Bonus Feature (Optional)
-
-#### Story 5: Search & Filter
-
-- **AC 1:** A search bar filters the view. Matching items deep inside folders should force those folders to expand automatically.
-
----
-
-## 4. Technical Requirements
-
-- **Data:** Use the `data.json` file provided in this repo. Do not edit the JSON structure, but you may add more items to test performance.
-- **Tech Stack:** React, Vue, Svelte, or Vanilla JS.
-- **Documentation:** Your README in the submission must include:
-  1.  Setup instructions.
-  2.  Link to your Design File.
-  3.  Explanation of your **Recursive Strategy** (how you managed the data structure).
-  4.  Explanation of your **Wildcard Feature**.
-
----
-
-## 5. Submission Instructions
-
-1.  **Fork** this repository.
-2.  Complete the code in your fork.
-3.  **Update the README:**
-    - **Delete** all the instructions in this file (the text you are reading now).
-    - **Replace** them with your own documentation as outlined in Section 4.
-    - _Note: Do not append your docs to the end. The final README should look like a professional project documentation, not a homework assignment._
-4.  Submit your repo link via the [online](https://forms.cloud.microsoft/e/PrfSgKKQ0k) form.
-
----
-
-### ⚠️ CRITICAL: Pre-Submission Checklist
-
-**STOP and review your work.** To be eligible for the Solution Defense interview, your submission **MUST** pass the following "Gatekeeper" checks.
-
-If any of the following are incorrect, your submission will be flagged as incomplete and you will **NOT** be invited for an interview.
-
-1.  **Public Repository:** Is your GitHub repository set to **Public**? (Private links will be auto-rejected).
-2.  **Audit-Ready History:** Does your Git commit history show your progress over time? (Repositories with a single "Initial Commit" or "Upload files" containing the entire project will be **rejected as unverifiable**).
-3.  **Working Deployment:** Have you tested your live link in an **Incognito/Private** window to ensure it loads without errors?
-4.  **No Restricted Libraries:** Did you build your own components? (Submissions using **Bootstrap, Material UI, or Chakra UI** will be disqualified).
-5.  **Design File Access:** Is your Figma/Penpot link included and set to **"Anyone with the link can view"**?
-6.  **Documentation:** Have you deleted the original assignment text from the `README.md` and replaced it with your own project documentation?
-
-> **By submitting your work, you acknowledge that failure to meet these criteria effectively ends your application process.**
+```
+src/
+├── App.vue                    layout, search box, global "/" shortcut
+├── useVault.js                data index, state, search, keyboard handling
+├── styles.css                 design tokens + component styles
+├── data.json                  vault data (unchanged)
+└── components/
+    ├── TreeNode.vue           the recursive tree row
+    ├── QuickList.vue          Pinned / Recent lists
+    ├── PropertiesPanel.vue    file details panel
+    └── Icon.vue               small inline SVG icon set
+```

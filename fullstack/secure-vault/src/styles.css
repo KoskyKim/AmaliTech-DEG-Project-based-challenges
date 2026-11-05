@@ -1,0 +1,74 @@
+/* Design tokens: mirror the Figma "Design System" page */
+:root {
+  --bg-canvas:#0A0E14; --bg-surface:#0F141C; --bg-elevated:#161D28; --bg-hover:#1B2433; --bg-selected:#0E2F33;
+  --border-subtle:#1F2937; --border:#2A3547;
+  --text:#E6EDF3; --text-2:#9AA7B8; --text-muted:#68768A; --on-accent:#04201A;
+  --accent:#22E3B0; --accent-dim:#14B88F; --success:#3DDC84; --focus:#FF9F1A;
+  --glow:0 0 0 1.5px var(--focus), 0 0 10px rgba(255,159,26,.45);
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s8:32px; --s10:40px;
+  --r-sm:4px; --r-md:6px; --r-lg:10px;
+  --ui:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0}
+html,body,#app{height:100%}
+body{background:var(--bg-canvas);color:var(--text);font:400 14px/20px var(--ui);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.mono{font:500 11px/16px var(--mono);letter-spacing:.06em}.muted{color:var(--text-muted)}.grow{flex:1}
+kbd{font:500 11px/16px var(--mono);color:var(--text-2);background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-sm);padding:2px 6px}
+
+.app{display:grid;grid-template-rows:56px 1fr 36px;height:100%}
+.topbar,.statusbar{display:flex;align-items:center;gap:var(--s3);padding:0 var(--s6);background:var(--bg-surface)}
+.topbar{border-bottom:1px solid var(--border-subtle)}.statusbar{border-top:1px solid var(--border-subtle);gap:var(--s6);overflow-x:auto;white-space:nowrap}
+.logo{color:var(--accent)}.sep{width:1px;height:20px;background:var(--border)}
+.pill{display:inline-flex;align-items:center;gap:var(--s2);padding:4px 10px;border:1px solid var(--border);border-radius:999px;background:var(--bg-elevated);font:500 11px/16px var(--mono);letter-spacing:.06em;color:var(--text-2)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--success)}
+.hint{display:inline-flex;align-items:center;gap:6px;font:500 12px/16px var(--ui);color:var(--text-muted)}
+
+.body{display:grid;grid-template-columns:400px 1fr;min-height:0}
+.explorer{display:flex;flex-direction:column;gap:var(--s4);padding:var(--s4);background:var(--bg-surface);border-right:1px solid var(--border-subtle)}
+.explorer-head{display:flex;justify-content:space-between}
+.search{display:flex;align-items:center;gap:var(--s2);height:36px;padding:0 var(--s2) 0 var(--s3);background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-md);color:var(--text-muted)}
+.search:focus-within{box-shadow:var(--glow);border-color:var(--focus)}
+.search input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text)}
+.search input::placeholder{color:var(--text-muted)}
+
+/* Tree rows (Tree Item component) */
+.tree,.tree ul,.quick ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:2px}
+/* Deep nesting: let the tree grow to its widest row and scroll sideways instead of squeezing names away */
+.tree{width:max-content;min-width:100%}
+.explorer{overflow:auto}
+.row{position:relative;display:flex;align-items:center;gap:var(--s2);width:100%;height:32px;padding:0 var(--s3) 0 var(--s2);background:none;border:0;border-radius:var(--r-md);text-align:left;cursor:pointer;outline:0;user-select:none}
+.row:hover{background:var(--bg-hover)}
+.row.selected{background:var(--bg-selected)}
+.row.selected::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:2px;border-radius:1px;background:var(--accent)}
+.row:focus-visible{box-shadow:var(--glow)}
+.chev{display:inline-flex;width:16px;color:var(--text-2);transition:transform .12s}
+.row.open .chev{transform:rotate(90deg)}.chev.hidden{visibility:hidden}
+.kind{display:inline-flex;color:var(--text-muted)}.row.folder .kind{color:#8FA3BF}.row.selected .kind{color:var(--accent)}
+.name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta{font:500 11px/16px var(--mono);letter-spacing:.06em;color:var(--text-muted)}
+mark{background:none;color:var(--accent);font-weight:600}
+.no-results{color:var(--text-2);padding:var(--s2)}
+
+.quick{display:flex;flex-direction:column;gap:var(--s1);padding-bottom:var(--s4);border-bottom:1px solid var(--border-subtle)}
+.quick h3{display:flex;align-items:center;gap:6px;padding-left:var(--s2);font:500 11px/16px var(--mono);letter-spacing:.06em;color:var(--text-muted)}
+.quick h3 svg{color:var(--focus)}
+
+/* Properties panel */
+.props{padding:var(--s10);display:flex;flex-direction:column;gap:28px;overflow-y:auto}
+.empty{margin:auto;max-width:320px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--s2);color:var(--text-2)}
+.empty h2{color:var(--text)}
+.file-head{display:flex;align-items:center;gap:var(--s4)}
+.file-badge{display:grid;place-items:center;width:56px;height:56px;border-radius:var(--r-lg);background:var(--bg-selected);border:1px solid var(--accent-dim);color:var(--accent)}
+h2{font:600 20px/28px var(--ui);letter-spacing:-.2px;overflow-wrap:anywhere}
+.file-head p{color:var(--text-2);font-size:13px;line-height:18px}
+.props-title{font:500 11px/16px var(--mono);letter-spacing:.06em;color:var(--text-muted);margin-bottom:calc(var(--s2) * -3)}
+dl>div{display:flex;gap:var(--s4);padding:var(--s3) 0;border-bottom:1px solid var(--border-subtle)}
+dt{width:120px;color:var(--text-2);font-size:13px}dd{font:400 13px/20px var(--mono);overflow-wrap:anywhere}
+.actions{display:flex;gap:var(--s3)}
+.btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 var(--s4);background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);font:500 12px/16px var(--ui);cursor:pointer}
+.btn:hover{background:var(--bg-hover)}.btn:focus-visible{outline:0;box-shadow:var(--glow)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.btn.primary:hover{background:var(--accent-dim)}
+
+@media (max-width:800px){.body{grid-template-columns:1fr;grid-template-rows:auto 1fr}.explorer{border-right:0;border-bottom:1px solid var(--border-subtle);max-height:60vh}.props{padding:var(--s6)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

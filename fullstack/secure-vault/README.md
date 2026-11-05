@@ -1,6 +1,6 @@
 # SecureVault Dashboard
 
-A dark-mode, keyboard-first file explorer for SecureVault's encrypted document vault. Built with **Vue 3 + Vite**, with every component written from scratch (no UI libraries).
+A dark-mode, keyboard-first file explorer for SecureVault's encrypted document vault. Built with **Vue 3 + Vite**
 
 - **Live demo:** _add your deployed URL here_
 - **Design file (Figma):** https://www.figma.com/design/R2tJUevQEKMYAmvw3RXw1m
@@ -24,7 +24,7 @@ Requires Node 18+.
 | Properties panel | Selecting a file shows its Name, Type and Size. Type is derived from the file extension. |
 | Keyboard navigation | `↑` `↓` move focus, `→` expands (or enters) a folder, `←` collapses (or goes to the parent), `Enter` selects a file, `Home` / `End` jump to the ends. |
 | Search | `/` focuses the search box. Matching items force their ancestor folders open; `↓` moves from the search box into the results; `Esc` clears the search. |
-| **Pinned & Recent (wildcard)** | See below. |
+| **Pinned & Recent (wildcard)** 
 
 ## Design system
 

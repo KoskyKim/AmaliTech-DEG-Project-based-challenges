@@ -12,7 +12,7 @@ const isFolder = !!props.node.children
     <div
       class="row" role="treeitem"
       :data-id="node.id"
-      :tabindex="v.state.focusedId === node.id ? 0 : -1"
+      :tabindex="v.activeId.value === node.id ? 0 : -1"
       :aria-level="depth + 1"
       :aria-expanded="isFolder ? v.isOpen(node) : undefined"
       :aria-selected="!isFolder ? v.state.selectedId === node.id : undefined"

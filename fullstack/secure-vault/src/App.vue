@@ -8,6 +8,7 @@ import { useVault } from './useVault'
 
 const v = useVault()
 const search = ref(null)
+const toTree = () => v.activeId.value && v.focus(v.activeId.value)
 const hints = [['↑ ↓', 'Navigate'], ['→', 'Expand'], ['←', 'Collapse'], ['Enter', 'Select'], ['P', 'Pin'], ['/', 'Search']]
 
 function onGlobal(e) {
@@ -38,7 +39,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onGlobal))
         <label class="search">
           <Icon name="search" />
           <input ref="search" v-model="v.state.query" type="text" placeholder="Search vault…"
-                 aria-label="Search vault" @keydown.esc="v.state.query = ''" />
+                  aria-label="Search vault" @keydown.esc="v.state.query = ''" @keydown.down.prevent="toTree" />
           <kbd v-if="!v.state.query">/</kbd>
         </label>
 

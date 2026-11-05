@@ -23,7 +23,7 @@ Requires Node 18+.
 | Recursive tree | Renders `src/data.json` at any depth; click a folder to expand or collapse it. |
 | Properties panel | Selecting a file shows its Name, Type and Size. Type is derived from the file extension. |
 | Keyboard navigation | `↑` `↓` move focus, `→` expands (or enters) a folder, `←` collapses (or goes to the parent), `Enter` selects a file, `Home` / `End` jump to the ends. |
-| Search | `/` focuses the search box. Matching items force their ancestor folders open; `Esc` clears the search. |
+| Search | `/` focuses the search box. Matching items force their ancestor folders open; `↓` moves from the search box into the results; `Esc` clears the search. |
 | **Pinned & Recent (wildcard)** | See below. |
 
 ## Design system

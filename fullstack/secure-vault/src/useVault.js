@@ -55,6 +55,9 @@ const rows = computed(() => {
   walk(data)
   return out
 })
+const activeId = computed(() =>
+  rows.value.some((n) => n.id === state.focusedId) ? state.focusedId : rows.value[0]?.id
+)
 
 // ---- 3. Actions ----
 const nodeOf = (id) => index.get(id)?.node
@@ -90,7 +93,7 @@ function togglePin(id) {
 function onKey(e) {
   if (e.ctrlKey || e.metaKey || e.altKey) return
   const list = rows.value
-  const i = list.findIndex((n) => n.id === state.focusedId)
+  const i = list.findIndex((n) => n.id === activeId.value)
   if (i < 0) return
   const n = list[i], open = isOpen(n)
   let handled = true
@@ -126,7 +129,7 @@ function parts(name) {
 }
 
 export const useVault = () => ({
-  data, state, rows, filter, nodeOf, isVisible, isOpen, activate, reveal, focus, select,
+ data, state, rows, activeId, filter, nodeOf, isVisible, isOpen, activate, reveal, focus, select,
   onKey, isPinned, canPin, togglePin, MAX_PINNED, fileType, meta, parts,
   pathOf: (id) => index.get(id)?.path ?? [],
   matchCount: computed(() => (filter.value ? [...filter.value.show].filter((id) => index.get(id).node.type === 'file' || index.get(id).node.name.toLowerCase().includes(q.value)).length : 0)),

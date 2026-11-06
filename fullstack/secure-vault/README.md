@@ -19,7 +19,13 @@ Requires Node 18+.
 
 ## Deployment
 
-Every push to `main` builds the app and publishes it to GitHub Pages (`.github/workflows/deploy.yml`). The workflow uses `npm ci`, so `package-lock.json` must be committed. `vite.config.js` uses a relative `base`, so the app works from a project URL like `https://<user>.github.io/<repo>/` without changes.
+The application is deployed on Vercel. Every push to the main branch can be automatically deployed through Vercel when the GitHub repository is connected to a Vercel project.
+
+# Vercel Deployment
+Import the repository into Vercel.
+Configure the project settings if required.
+Vercel automatically installs dependencies, builds the application, and deploys the latest changes.
+Subsequent pushes to the main branch trigger automatic redeployments.
 
 
 

@@ -2,7 +2,7 @@
 
 A dark-mode, keyboard-first file explorer for SecureVault's encrypted document vault. Built with **Vue 3 + Vite**
 
-- **Live demo:** _add your deployed URL here_
+- **Live demo (Vercel):**  https://amali-tech-deg-project-based-challe-woad.vercel.app
 - **Design file (Figma):** https://www.figma.com/design/R2tJUevQEKMYAmvw3RXw1m
 
 ## Setup
